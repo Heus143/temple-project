@@ -10,7 +10,7 @@ Production-quality, responsive website for SRI ANNAPURNAMMA TEMPLE (శ్రీ
 
 ## User Personas
 - **Visitor**: reads published temple info, events, gallery, committee, previous years, sends contact messages.
-- **Temple Administrator** (kumardivvelaa@gmail.com): manages all content via /admin, no code needed.
+- **Temple Administrator** (templeadmin2026@gmail.com): manages all content via /admin, no code needed.
 
 ## Core Requirements (static)
 - Unified hero (title artwork above deity, one gold frame, no black bars, object-fit contain).

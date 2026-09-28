@@ -222,8 +222,10 @@ async def login(data: LoginInput, request: Request, response: Response):
 
 @api_router.post("/auth/logout")
 async def logout(response: Response, user: dict = Depends(get_current_user)):
-    response.delete_cookie("access_token", path="/")
-    response.delete_cookie("refresh_token", path="/")
+    # Invalidate all existing tokens server-side (stateless JWTs otherwise stay valid until expiry)
+    await db.users.update_one({"_id": ObjectId(user["_id"])}, {"$inc": {"token_version": 1}})
+    response.delete_cookie("access_token", path="/", samesite="none", secure=True)
+    response.delete_cookie("refresh_token", path="/", samesite="none", secure=True)
     return {"message": "Logged out"}
 
 

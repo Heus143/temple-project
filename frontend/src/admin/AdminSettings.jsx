@@ -14,6 +14,8 @@ export default function AdminSettings() {
         { key: "footer_text", label: "Footer Text", type: "textarea", rows: 2 },
         { key: "seo_title", label: "SEO Title" },
         { key: "seo_description", label: "SEO Description", type: "textarea", rows: 2 },
+        { key: "hero_title_image", label: "Sacred Hero — Telugu Title Artwork (replace only with a genuine higher-resolution original)", type: "image" },
+        { key: "hero_deity_image", label: "Sacred Hero — Ammavari Photograph (replace only with a genuine higher-resolution original)", type: "image" },
       ]}
     />
   );

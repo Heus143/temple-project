@@ -24,12 +24,12 @@ export default function Committee() {
               style={{ background: "var(--ivory)", border: "2px solid var(--antique-gold)", boxShadow: "0 6px 18px rgba(80,0,0,0.1)" }}
               data-testid={`committee-member-${m.id}`}
             >
-              <div className="w-full" style={{ aspectRatio: "4 / 5", background: "var(--cream)" }}>
+              <div className="w-full" style={{ background: "var(--cream)" }}>
                 <img
                   src={m.photo}
                   alt={m.name || "Committee member"}
                   loading="lazy"
-                  className="w-full h-full object-cover"
+                  className="w-full h-auto object-contain block"
                 />
               </div>
               <div className="p-3 text-center flex-1 flex flex-col justify-center">
