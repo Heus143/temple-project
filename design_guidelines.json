@@ -1,0 +1,77 @@
+{
+  "project_name": "SRI ANNAPURNAMMA TEMPLE",
+  "telugu_title": "శ్రీ అన్నపూర్ణమ్మ అమ్మ వారి దేవర మందిరము",
+  "location": "Avvaru Vari Street, Chirala, Bapatla District, Andhra Pradesh – 523155",
+  "archetype": "ORGANIC & EARTHY / HERITAGE SACRED DEVOTIONAL",
+  "theme": "Traditional Indian Temple Aesthetic + Modern Responsive UI",
+  "colors": {
+    "deep_maroon": "#500000",
+    "royal_maroon": "#800020",
+    "maroon_hover": "#6B0518",
+    "antique_gold": "#C5A059",
+    "antique_gold_dark": "#9A7B38",
+    "light_gold": "#E5C158",
+    "gold_accent": "#D4AF37",
+    "ivory": "#FFFAF0",
+    "cream": "#FFFDD0",
+    "beige": "#F5F5DC",
+    "warm_brown": "#3E2723",
+    "text_primary": "#2D0A0E",
+    "text_muted": "#5C3D32",
+    "border_gold": "#D4AF37"
+  },
+  "typography": {
+    "font_family_heading": "'Cinzel', 'Noto Serif Telugu', serif",
+    "font_family_body": "'Cormorant Garamond', 'Inter', 'Noto Serif Telugu', serif",
+    "font_family_telugu": "'Noto Serif Telugu', 'Mandali', serif",
+    "h1_hero": "text-3xl md:text-5xl font-bold tracking-wide text-[#800020]",
+    "h2_section": "text-2xl md:text-3xl font-serif font-bold text-[#500000] border-b-2 border-[#C5A059] pb-2 inline-block",
+    "h3_card": "text-xl font-semibold text-[#500000]",
+    "body_text": "text-base md:text-lg leading-relaxed text-[#2D0A0E]"
+  },
+  "layout_hierarchy": [
+    "1. Mantra Ticker Marquee: Seamless RTL / LTR running text 'ఓం శ్రీ అన్నపూర్ణా దేవి' in golden ticker bar with maroon bg (#500000)",
+    "2. Unified Sacred Hero: Title artwork image directly above Ammavari deity photograph in a single antique-gold-bordered frame, ivory (#FFFAF0) background, NO black bars, deity image object-fit contain, max-width min(760px, 94vw)",
+    "3. Box-Style Navigation Cards: Individual rounded cards with ivory bg, antique-gold border, deep maroon text. Hover: maroon bg + ivory text. Active: deep maroon bg. Layout: 3 columns desktop, 2 columns mobile. Nav items: Home, About Temple, Gallery, Previous Years, Events, Committee, Avvaru Vamshavali, Location, Contact",
+    "4. Welcome / Intro Section: Temple history & spiritual significance with ornate gold arch borders and brass diya accents",
+    "5. Featured Announcements & Upcoming Events",
+    "6. Featured Gallery Preview",
+    "7. Footer: Sacred motifs, address, contact, pooja timings, admin portal login button"
+  ],
+  "navigation_cards_spec": {
+    "desktop_columns": "grid-cols-3 gap-4 md:gap-6 max-w-5xl mx-auto my-8 px-4",
+    "mobile_columns": "grid-cols-2 gap-3",
+    "card_style": "p-4 md:p-6 rounded-xl bg-[#FFFAF0] border-2 border-[#C5A059] text-[#500000] font-serif text-center font-bold text-lg transition-all duration-300 shadow-md hover:bg-[#800020] hover:text-[#FFFAF0] hover:border-[#E5C158] hover:shadow-xl cursor-pointer flex flex-col items-center justify-center gap-2",
+    "active_card_style": "bg-[#500000] text-[#FFFAF0] border-[#E5C158] ring-2 ring-[#D4AF37]"
+  },
+  "admin_dashboard_spec": {
+    "layout": "Sidebar layout with header and content area",
+    "sidebar_bg": "bg-[#3E2723] text-[#FFFAF0] border-r border-[#C5A059]/30",
+    "features": [
+      "Content Management (About, Announcements, Home content)",
+      "Events Management (Upcoming and Past Events with photos & date range)",
+      "Gallery & Media Library (Image upload/URL, captions, category tag)",
+      "Committee Members CRUD (Designation, Photo, Phone, Bio)",
+      "Avvaru Vamshavali Lineage Entries CRUD (Generation, Name, Details, Family tree node)",
+      "Previous Years Archive Management",
+      "Contact Form Submissions Viewer",
+      "Temple Pooja Timings & Notice Bar Editor"
+    ]
+  },
+  "image_urls": {
+    "deity_ammavari": "https://images.unsplash.com/photo-1741003411042-4dcbb70203ee?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "temple_architecture": "https://images.unsplash.com/photo-1777139820432-b6a1e056be6c?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "pooja_diya": "https://images.unsplash.com/photo-1575989762363-c7ce0137427a?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "ganesha_idol": "https://images.unsplash.com/photo-1563777389189-5e3564e5961c?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "diya_candles": "https://images.unsplash.com/photo-1514377863868-02d7217c8bcd?crop=entropy&cs=srgb&fm=jpg&q=85",
+    "gopuram_tower": "https://images.unsplash.com/photo-1619239632374-9e6651c2b7bb?crop=entropy&cs=srgb&fm=jpg&q=85"
+  },
+  "general_ui_ux_guidelines": [
+    "Ensure all interactive elements and buttons include `data-testid` attributes (e.g. data-testid='nav-home-card', data-testid='admin-login-button')",
+    "Do NOT use pure transparent backgrounds for headers or overlays; use solid ivory `#FFFAF0` or maroon `#500000` with proper opacity and blur",
+    "Strictly follow Telugu rendering standards with Google Fonts Noto Serif Telugu",
+    "All components are built as `.js` / `.jsx` files",
+    "Maintain responsive layouts across mobile, tablet, and desktop views"
+  ]
+},
+overwrite:true,path:
