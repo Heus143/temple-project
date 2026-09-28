@@ -570,6 +570,7 @@ async def seed_defaults():
             "temple_name_te": "శ్రీ అన్నపూర్ణమ్మ అమ్మ వారి దేవర మందిరము",
             "mantra": "ఓం శ్రీ అన్నపూర్ణా దేవి",
             "footer_text": "",
+            "footer_telugu": "ఇట్లు\nఅవ్వారు వంశానికి ఇలవేల్పు\nశ్రీ అన్నపూర్ణమ్మ అమ్మవారి దేవర మందిర అభివృద్ధి కమిటీ\nఅవ్వారు వారి వీధి, చీరాల.\nరి.నెం: 39/2012",
             "address": "Avvaru Vari Street, Chirala, Bapatla District, Andhra Pradesh – 523155",
             "phone": "", "email": "",
             "maps_link": "",

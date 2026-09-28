@@ -16,6 +16,26 @@ export default function Footer() {
       data-testid="site-footer"
     >
       <div className="gold-divider" />
+      {settings.footer_telugu ? (
+        <div className="px-6 pt-10 pb-2 text-center" data-testid="footer-telugu">
+          <p
+            className="font-telugu mx-auto whitespace-pre-line"
+            style={{
+              color: "var(--light-gold)",
+              maxWidth: 680,
+              fontSize: "clamp(1rem, 2.4vw, 1.35rem)",
+              lineHeight: 1.9,
+              letterSpacing: "0.01em",
+            }}
+          >
+            {settings.footer_telugu}
+          </p>
+          <div
+            className="mx-auto mt-6"
+            style={{ width: 90, height: 2, background: "var(--antique-gold)", opacity: 0.5 }}
+          />
+        </div>
+      ) : null}
       <div className="max-w-6xl mx-auto px-6 py-12 grid gap-10 md:grid-cols-4">
         <div className="md:col-span-2">
           <h3 className="font-telugu text-lg mb-1" style={{ color: "var(--light-gold)" }}>
