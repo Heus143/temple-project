@@ -91,7 +91,11 @@ async def get_current_user(request: Request) -> dict:
         payload = jwt.decode(token, get_jwt_secret(), algorithms=[JWT_ALGORITHM])
         if payload.get("type") != "access":
             raise HTTPException(status_code=401, detail="Invalid token type")
-        user = await db.users.find_one({"_id": ObjectId(payload["sub"])})
+        try:
+            oid = ObjectId(payload["sub"])
+        except Exception:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        user = await db.users.find_one({"_id": oid})
         if not user:
             raise HTTPException(status_code=401, detail="User not found")
         if payload.get("ver", 0) != user.get("token_version", 0):
@@ -191,10 +195,17 @@ def public_user(u: dict) -> dict:
     return {"id": str(u["_id"]), "email": u["email"], "name": u.get("name", "Admin"), "role": u.get("role", "admin")}
 
 
+def client_ip(request: Request) -> str:
+    fwd = (request.headers.get("x-forwarded-for") or "").split(",")[0].strip()
+    if fwd:
+        return fwd
+    return request.client.host if request.client else "unknown"
+
+
 @api_router.post("/auth/login")
 async def login(data: LoginInput, request: Request, response: Response):
     email = data.email.lower().strip()
-    ip = request.client.host if request.client else "unknown"
+    ip = client_ip(request)
     identifier = f"{ip}:{email}"
     if await is_locked_out(identifier):
         raise HTTPException(status_code=429, detail="Too many failed attempts. Please try again in 15 minutes.")
@@ -230,7 +241,11 @@ async def refresh(request: Request, response: Response):
         payload = jwt.decode(token, get_jwt_secret(), algorithms=[JWT_ALGORITHM])
         if payload.get("type") != "refresh":
             raise HTTPException(status_code=401, detail="Invalid token type")
-        user = await db.users.find_one({"_id": ObjectId(payload["sub"])})
+        try:
+            oid = ObjectId(payload["sub"])
+        except Exception:
+            raise HTTPException(status_code=401, detail="Invalid token")
+        user = await db.users.find_one({"_id": oid})
         if not user or payload.get("ver", 0) != user.get("token_version", 0):
             raise HTTPException(status_code=401, detail="Session expired")
         uid = str(user["_id"])
@@ -431,6 +446,8 @@ async def upload_media(data: dict = Body(...), admin: dict = Depends(get_current
     url = data.get("data_url")
     if not url or not isinstance(url, str) or not url.startswith("data:"):
         raise HTTPException(status_code=400, detail="Invalid image data")
+    if len(url) > 12_000_000:
+        raise HTTPException(status_code=413, detail="Image too large. Please upload an image under ~8MB.")
     doc = {
         "id": str(uuid.uuid4()),
         "filename": data.get("filename", "upload"),
@@ -521,7 +538,7 @@ async def seed_admin():
         })
         logger.info("Seeded admin user")
     elif not verify_password(admin_password, existing["password_hash"]):
-        await db.users.update_one({"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}})
+        await db.users.update_one({"email": admin_email}, {"$set": {"password_hash": hash_password(admin_password)}, "$inc": {"token_version": 1}})
         logger.info("Updated admin password")
 
 

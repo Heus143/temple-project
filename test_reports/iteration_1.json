@@ -1,0 +1,38 @@
+{
+  "summary": "Comprehensive backend + frontend testing for Sri Annapurnamma Temple CMS. 20/21 pytest backend tests pass. Frontend admin login, protected routes, event CRUD via UI, mobile responsiveness all working. Single real bug: brute-force lockout doesn't work in production because it relies on request.client.host which behind K8s ingress is the ingress pod IP (or missing), not the real client. Locally it works (5 fails -> 429), through the public preview URL it never triggers.",
+  "backend_issues": {
+    "critical": [],
+    "minor": [
+      {"endpoint": "POST /api/auth/login", "issue": "Brute-force lockout uses request.client.host as part of identifier. Behind the K8s ingress the socket peer is the ingress/proxy, so real client IP is lost. Verified: 7 wrong-password attempts via public URL all return 401 (never 429); direct localhost:8001 correctly returns 429 on 6th attempt. Fix: extract client IP from X-Forwarded-For (first entry) with a safe fallback to request.client.host."}
+    ]
+  },
+  "frontend_issues": {
+    "ui_bugs": [],
+    "integration_issues": [],
+    "design_issues": [
+      {"screen": "All public pages", "issues": ["Browser tab title is 'Emergent | Fullstack App' — public /index.html <title> should be set to 'Sri Annapurnamma Temple' (or use website_settings.seo_title). Also update <meta description>."]}
+    ]
+  },
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [
+    "Fix brute-force lockout to use X-Forwarded-For header so 429 works behind the ingress (real prod protection).",
+    "Update /app/frontend/public/index.html <title> and <meta description> to temple branding (currently 'Emergent | Fullstack App')."
+  ],
+  "critical_code_review_comments": [
+    "server.py (~600 lines) is fine size-wise but consider splitting auth, content, collections into modules if it keeps growing.",
+    "seed_admin only updates the password when the ADMIN_PASSWORD in .env changes; token_version is NOT bumped on that path, so stale JWTs still work. If .env password rotates, existing sessions remain valid. Consider $inc token_version on password update.",
+    "get_current_user uses ObjectId(payload['sub']); an invalid string would raise bson.errors.InvalidId (500). Wrap in try/except and raise 401.",
+    "CORS: allow_origins is [FRONTEND_URL, 'http://localhost:3000'] with allow_credentials=True — good, but ADMIN preview URL is hardcoded via env; verified working. CORS_ORIGINS in .env is unused.",
+    "Announcements public filter uses date().isoformat() string comparisons against Mongo string dates — works because ISO YYYY-MM-DD is lexicographically ordered, but a stored ISO datetime like '2027-01-15T00:00:00Z' would still compare correctly against '2026-01-28'. Consider documenting the expected date format.",
+    "PUT /api/content/{key} accepts arbitrary dict — no schema validation. Acceptable for a flexible singleton store but note the risk.",
+    "Media upload accepts any base64 data URL with no size cap → Mongo doc size could hit 16MB limit on large images."
+  ],
+  "updated_files": ["/app/backend/tests/backend_test.py", "/app/test_reports/iteration_1.json"],
+  "success_rate": {"backend": "95% (20/21)", "frontend": "100% of tested flows"},
+  "test_credentials": "kumardivvelaa@gmail.com / Annapurnamma@2026#Admin (from /app/memory/test_credentials.md — matches backend .env ADMIN_EMAIL/ADMIN_PASSWORD)",
+  "seed_data_creation": "None persisted; all TEST_ prefixed data (events, previous_years, announcements, vamshavali, gallery, gallery_categories, contact_message, UI TEST Event) created and deleted within tests. Singleton content markers ('TEST_home_content', etc.) were left in singletons — main agent may want to reset those via admin UI or a script; they do not appear on public pages without matching field names.",
+  "retest_needed": true,
+  "should_main_agent_self_test": true,
+  "context_for_next_testing_agent": "Pytest suite at /app/backend/tests/backend_test.py covers auth, singletons, all 8 collections CRUD+publish flow, media upload, reorder, contact messages, stats, and brute-force. Committee count is asserted ==17 (do not delete seed). Brute-force test currently expects lockout to work via public URL — after fix, rerun. UI smoke via Playwright confirmed /admin -> /admin/login redirect and event create flow with data-testid selectors (login-email/password/submit, add-events-btn, field-title, save-entity-btn).",
+  "rca of the issue": "Brute-force lockout RCA: server.py:197 builds identifier = f'{ip}:{email}' where ip = request.client.host. In a K8s/uvicorn deployment behind an ingress-nginx proxy, request.client.host resolves to the immediate connection peer (ingress pod) rather than the real client. Multiple ingress replicas or connection pooling by the proxy can produce varying peer values, so the count query in is_locked_out never accumulates >=5. Fix: parse X-Forwarded-For (first hop) at the top of the login handler and use that as ip when present, e.g. `ip = (request.headers.get('x-forwarded-for') or '').split(',')[0].strip() or (request.client.host if request.client else 'unknown')`. Reproduction: 7 x curl POST /api/auth/login with wrong password against https://sri-ammavari-chirala.preview.emergentagent.com -> all 401; same test against http://localhost:8001 -> 401 x5 then 429."
+}
