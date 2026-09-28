@@ -20,9 +20,12 @@ export default function Home() {
   const { data: events, loading: evLoading } = useFetch("/collection/events", []);
   const { data: gallery } = useFetch("/collection/gallery", []);
   const { data: announcements } = useFetch("/collection/announcements", []);
+  const { data: settings } = useFetch("/content/website_settings", []);
 
   const h = home || {};
   const t = temple || {};
+  const s = settings || {};
+  const deitySrc = s.hero_deity_image || "/assets/deity_hd.jpg";
   const upcoming = (events || []).filter((e) => (e.status || "Upcoming") !== "Archived").slice(0, 3);
   const featuredGallery = (gallery || []).slice(0, 6);
   const activeAnnouncements = (announcements || []).slice(0, 3);
@@ -45,6 +48,59 @@ export default function Home() {
               Welcome content will be updated by the temple administration.
             </p>
           )}
+        </Panel>
+      </section>
+
+      {/* Avvaru Vamshavali feature */}
+      <section className="mb-12 fade-up" data-testid="home-vamshavali">
+        <h2 className="font-heading text-center font-semibold tracking-widest" style={{ color: "var(--deep-maroon)", fontSize: "clamp(1.35rem, 3vw, 2rem)" }}>
+          AVVARU VAMSHAVALI
+        </h2>
+        <div className="gold-divider mb-8" />
+        <Panel>
+          <div className="grid gap-8 md:grid-cols-2 items-center">
+            <div className="rounded-lg overflow-hidden" style={{ background: "var(--cream)", border: "1px solid var(--antique-gold)" }}>
+              <img
+                src={deitySrc}
+                alt="Sri Annapurnamma Ammavari — original temple photograph"
+                className="w-full h-auto object-contain block"
+                loading="lazy"
+              />
+            </div>
+            <div className="text-center md:text-left">
+              <h3 className="font-heading font-bold" style={{ color: "var(--deep-maroon)", fontSize: "clamp(1.25rem, 2.4vw, 1.7rem)" }}>
+                {s.temple_name_en || "Sri Annapurnamma Temple"}
+              </h3>
+              <p className="font-telugu mt-1" style={{ color: "var(--royal-maroon)", fontSize: "1.05rem" }}>
+                {s.temple_name_te || "శ్రీ అన్నపూర్ణమ్మ అమ్మ వారి దేవర మందిరము"}
+              </p>
+              <div className="mt-6">
+                <h4 className="font-heading font-semibold tracking-widest text-sm" style={{ color: "var(--antique-gold-dark)" }}>
+                  AVVARU VAMSHAVALI / ILLAVELPU
+                </h4>
+                {h.vamshavali_text ? (
+                  <p className="font-body mt-2 whitespace-pre-line" style={{ color: "var(--text-primary)", fontSize: "1.05rem", lineHeight: 1.8 }}>
+                    {h.vamshavali_text}
+                  </p>
+                ) : (
+                  <p className="font-body mt-2 italic" style={{ color: "var(--text-muted)" }}>
+                    Vamshavali information will be updated by the temple administration.
+                  </p>
+                )}
+              </div>
+              <div className="mt-6">
+                <h4 className="font-heading font-semibold tracking-widest text-sm" style={{ color: "var(--antique-gold-dark)" }}>
+                  ADDRESS
+                </h4>
+                <p className="font-body mt-2" style={{ color: "var(--text-primary)", lineHeight: 1.7 }}>
+                  {s.address || "Avvaru Vari Street, Chirala, Bapatla District, Andhra Pradesh – 523155"}
+                </p>
+              </div>
+              <Link to="/vamshavali" className="inline-flex items-center gap-2 mt-6 font-heading font-semibold" style={{ color: "var(--royal-maroon)" }} data-testid="home-vamshavali-link">
+                View Avvaru Vamshavali <ArrowRight size={16} />
+              </Link>
+            </div>
+          </div>
         </Panel>
       </section>
 

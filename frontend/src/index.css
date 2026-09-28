@@ -80,8 +80,8 @@ body {
 
 /* ---------------- Sacred Hero ---------------- */
 .hero-sacred-composition {
-  width: min(760px, 94vw);
-  margin: 0 auto;
+  width: min(900px, 94vw);
+  margin: 24px auto 0;
   background: #fffaf0;
   border: 2px solid var(--antique-gold);
   border-radius: 10px;

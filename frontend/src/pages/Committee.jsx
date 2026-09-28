@@ -14,7 +14,7 @@ export default function Committee() {
       {loading ? (
         <Loader />
       ) : !list.length ? (
-        <EmptyState message="Committee details will be updated by the temple administration." testId="committee-empty" />
+        <EmptyState message="Committee information will be updated by the temple administration." testId="committee-empty" />
       ) : (
         <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4 md:gap-6">
           {list.map((m) => (

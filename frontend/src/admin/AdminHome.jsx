@@ -10,6 +10,7 @@ export default function AdminHome() {
         { key: "welcome_title", label: "Welcome Title" },
         { key: "welcome_text", label: "Welcome Message", type: "textarea", rows: 4 },
         { key: "intro_text", label: "Introduction", type: "textarea", rows: 5 },
+        { key: "vamshavali_text", label: "Avvaru Vamshavali / Illavelpu Info (Home feature section)", type: "textarea", rows: 5 },
       ]}
     />
   );
