@@ -1,0 +1,16 @@
+{
+  "summary": "Retest of admin login/logout/session bug fix. All 7 scoped scenarios (UI login, session persistence on refresh, UI logout, unauth /admin redirect, wrong-password error, API login/me/logout with token_version invalidation, no public registration, DB has single admin with $2b$ bcrypt hash) PASSED. No regressions detected.",
+  "backend_issues": {"critical": [], "minor": []},
+  "frontend_issues": {"ui_bugs": [], "integration_issues": [], "design_issues": []},
+  "test_report_links": ["/app/backend/tests/backend_test.py", "/app/test_reports/pytest/pytest_results.xml"],
+  "action_items": [],
+  "critical_code_review_comments": [],
+  "updated_files": [],
+  "success_rate": {"backend": "100%", "frontend": "100%"},
+  "test_credentials": "templeadmin2026@gmail.com / Annapurnamma@2026#Admin (from /app/memory/test_credentials.md)",
+  "seed_data_creation": "None. Cleared login_attempts collection after wrong-password test to avoid lockout for next run.",
+  "retest_needed": false,
+  "main_agent_can_self_test": true,
+  "context_for_next_testing_agent": "Bug fix verified end-to-end. Login API returns 200 + sets httpOnly access_token & refresh_token cookies. /api/auth/logout bumps token_version so old JWT cookies return 401 'Session expired' on /api/auth/me. Wrong password/unknown email both return 401 'Invalid email or password'. POST /api/auth/register -> 404 (no public registration). /api/admin/stats -> 401 without cookie, 200 with admin cookie. DB has exactly one admin (email=templeadmin2026@gmail.com, role=admin, password_hash starts with $2b$12$, token_version=1). Frontend AdminLayout properly redirects unauthenticated users to /admin/login and login-error testid displays the API error message. Brute-force protection is active (5 fails / 15 min per IP+email); tests kept wrong-password attempts to 1 and cleared login_attempts afterwards.",
+  "rca of the issue": "Prior bug: seeded admin email was overridden to kumardivvelaa@gmail.com by platform, mismatch with .env ADMIN_EMAIL. Also logout was purely client-side cookie clear so stolen/retained JWTs remained valid. Fix (already applied by main agent): (1) updated user doc email -> templeadmin2026@gmail.com and synced backend/.env; (2) /api/auth/logout now increments user.token_version and get_current_user rejects tokens whose ver != current token_version, returning 401 Session expired; (3) cookie deletion uses matching samesite=none/secure. Reproduction now impossible — login succeeds and old cookies are invalidated post-logout as verified via curl."
+}

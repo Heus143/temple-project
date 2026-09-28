@@ -30,6 +30,7 @@ Production-quality, responsive website for SRI ANNAPURNAMMA TEMPLE (శ్రీ
 - ✅ Gallery lightbox + categories, announcements date-window filtering.
 - ✅ Responsive, SEO title/meta/OG, accessibility (alt text, focus states, semantic HTML), no Lovable branding.
 - ✅ Tested: 20/21 backend (then brute-force fixed → passing), 100% frontend flows.
+- ✅ Bug fix (2026-06): Admin login email corrected to templeadmin2026@gmail.com (was seeded as kumardivvelaa@gmail.com). Logout hardened: token_version bump invalidates retained JWTs server-side. Verified by testing agent (iteration_2, 100%).
 
 ## Backlog / Remaining
 - **P1**: Admin explicit "replace protected hero asset" upload control (currently hero images are fixed static files).
